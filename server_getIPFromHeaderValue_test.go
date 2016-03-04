@@ -33,7 +33,7 @@ func Test_getIPFromHeaderValue_InvalidValues_ErrorIsReturned(t *testing.T) {
 	}
 }
 
-func Test_getIPFromHeaderValue_PrivateAddresses_ErrorIsReturned(t *testing.T) {
+func Test_getIPFromHeaderValue_PrivateAddresses_IPIsReturned(t *testing.T) {
 	// arrange
 	ipHeaderValues := []string{
 		"10.0.2.1",
@@ -49,12 +49,12 @@ func Test_getIPFromHeaderValue_PrivateAddresses_ErrorIsReturned(t *testing.T) {
 	for _, ipHeaderValue := range ipHeaderValues {
 
 		// act
-		_, err := getIPFromHeaderValue(ipHeaderValue)
+		ip, err := getIPFromHeaderValue(ipHeaderValue)
 
 		// assert
-		if err == nil || !strings.Contains(err.Error(), "Unable to extract IP from") {
+		if err != nil || ip == nil {
 			t.Fail()
-			t.Logf("getIPFromHeaderValue(%q) should return an error.", ipHeaderValue)
+			t.Logf("getIPFromHeaderValue(%q) should return an IP address.", ipHeaderValue)
 		}
 	}
 }
@@ -79,7 +79,7 @@ func Test_getIPFromHeaderValue_PublicAddresses_IPIsReturned(t *testing.T) {
 	}
 }
 
-func Test_getIPFromHeaderValue_MixedPublicAndPrivateAddresses_PublicIPIsReturned(t *testing.T) {
+func Test_getIPFromHeaderValue_MixedPublicAndPrivateAddresses_FirstIPIsReturned(t *testing.T) {
 	// arrange
 	ipHeaderValue := "10.2.1.3 , 8.8.8.8"
 
@@ -87,7 +87,7 @@ func Test_getIPFromHeaderValue_MixedPublicAndPrivateAddresses_PublicIPIsReturned
 	ip, _ := getIPFromHeaderValue(ipHeaderValue)
 
 	// assert
-	if ip.String() != "8.8.8.8" {
+	if ip.String() != "10.2.1.3" {
 		t.Fail()
 		t.Logf("getIPFromHeaderValue(%q) should return the public IP address.", ipHeaderValue)
 	}

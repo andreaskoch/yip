@@ -9,6 +9,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -42,7 +43,18 @@ var privateNetworkMasks = func() []net.IPNet {
 }()
 
 func main() {
-	ipServer(":8080")
+
+	// the default bind address
+	bindAddress := ":8080"
+
+	// use the first command line argument
+	// as the new bind address
+	if len(os.Args) > 1 {
+		bindAddress = os.Args[1]
+	}
+
+	// start the server with the given address
+	ipServer(bindAddress)
 }
 
 // ipServer starts the IP server on the given bind address (e.g. ":80").
@@ -50,9 +62,9 @@ func ipServer(bindAddress string) {
 
 	// server version
 	if version() != "unknown" {
-		log.Println("[INFO]", "Starting server", version())
+		log.Println("[INFO]", "Starting server", version(), bindAddress)
 	} else {
-		log.Println("[INFO]", "Starting server")
+		log.Println("[INFO]", "Starting server", bindAddress)
 	}
 
 	http.HandleFunc("/", ipResponder)

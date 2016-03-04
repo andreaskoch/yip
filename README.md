@@ -2,6 +2,8 @@
 
 Yip as in "your ip". Yip is a standalone web-server that responds with the users' IPv6 or IPv4 address.
 
+[![Build Status](https://travis-ci.org/andreaskoch/yip.svg?branch=master)](https://travis-ci.org/andreaskoch/yip)
+
 ## Usage
 
 Yip will start a HTTP server listening on port 8080 that will do nothing but return the users' IP address:

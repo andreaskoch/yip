@@ -137,21 +137,6 @@ func getXForwardedForHeader(header http.Header) (string, error) {
 	return "", fmt.Errorf("X-Forwared-For header was not found")
 }
 
-// isPublicIP returns true if the given IP can be routed on the Internet
-func isPublicIP(ip net.IP) bool {
-	if !ip.IsGlobalUnicast() {
-		return false
-	}
-
-	for _, mask := range privateNetworkMasks {
-		if mask.Contains(ip) {
-			return false
-		}
-	}
-
-	return true
-}
-
 // getIPFromHeaderValue parses the value of the X-Forwarded-For Header and returns the IP address.
 func getIPFromHeaderValue(ipHeaderValue string) (net.IP, error) {
 	for _, entry := range strings.Split(ipHeaderValue, ",") {
@@ -165,7 +150,7 @@ func getIPFromHeaderValue(ipHeaderValue string) (net.IP, error) {
 		}
 
 		// try to parse the IP
-		if ip := net.ParseIP(entry); ip != nil && isPublicIP(ip) {
+		if ip := net.ParseIP(entry); ip != nil {
 			return ip, nil
 		}
 	}

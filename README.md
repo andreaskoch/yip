@@ -6,7 +6,7 @@ Yip as in "your ip". Yip is a standalone web-server that responds with the users
 
 ## Usage
 
-Yip will start a HTTP server listening on port 8080 that will do nothing but return the users' IP address:
+Yip will start a HTTP server listening on tcp4 and tcp6 port 8080 that will do nothing but return the users' IP address:
 
 **Using go**
 
@@ -24,6 +24,26 @@ yip
 
 ```bash
 curl http://<your-servers-ip>:8080
+```
+
+If you want to use a different port or if you just want to listen on tcp4 or tcp6 ports you can specify the bind address as the first argument.
+
+Start yip on port 80:
+
+```bash
+yip :80
+```
+
+Start yip on IPv4 port 80:
+
+```bash
+yip 0.0.0.0:80
+```
+
+Start yip on IPv6 port 80:
+
+```bash
+yip '[::]:80'
 ```
 
 ## Download

@@ -71,15 +71,17 @@ git clone git@github.com:andreaskoch/yip.git && cd yip && make install
 Yip comes with Make file that allows you to easily cross-compile yip for Linux (64bit, ARM, ARM5, ARM6, ARM7), Mac OS (64bit) and Windows (64bit).
 
 ```bash
+git clone git@github.com:andreaskoch/yip.git
+cd $GOPATH/github.com/andreaskoch/yip
 make crosscompile
 ```
 
 ## Docker
 
-Yip has a trusted build on docker hub ([andreaskoch/yip:stable](https://hub.docker.com/r/andreaskoch/yip/)) that you can directly use without having to install yip or go:
+There is docker image with the latest yip binary:
 
 ```bash
-docker run -ti -rm -p <your-interface-ip>:80:8080 andreaskoch/yip
+docker run -ti -rm -p <your-interface-ip>:80:8080 andreaskoch/yip:latest
 ```
 
 **Note**: When using the docker image it is important that you specify your IP address in the docker port binding, because otherwise yip will always return the IP of the docker bridge (172.17.0.1) instead of the users' ip.
